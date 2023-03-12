@@ -103,6 +103,17 @@ input:focus{
   display: block;
   width: 200px;
   height: 50px;
+  background-color: #5c5e92;
+  border: none;
+  border-radius: 15px;
+  color: #fff;
+  text-transform: capitalize;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.submit-btn:hover{
+  background-color:#aaa1ff ;
 }
 .list-wrap {
   display: flex;
