@@ -5,9 +5,23 @@ export default {
       cityName: " ",
       response: "",
       responseResult: "",
+      history: [],
     };
   },
   methods: {
+    created() {
+      let storedValues= localStorage.getItem('History');
+      if (storedValues){
+        this.history = JSON.parse(storedValues);
+      }
+    },
+    updateHistory(newValue){
+      this.history.unshift(newValue);
+      if(this.history.length>5){
+        this.history.pop();
+      }
+      localStorage.setItem('History', JSON.stringify(this.history));
+    },
     getCityName() {
       console.log(this.cityName);
 
@@ -31,17 +45,22 @@ export default {
       //  console.log("response result "+ this.responseResult)
       return this.responseResult;
     },
+    setFromHistory(city){
+      this.cityName= city;
+      this.getData();
+    },
     getData() {
       this.setResponse();
       this.setResponseResult();
       this.getWeather(this.responseResult.list);
+      this.updateHistory(this.cityName);
     },
   },
 };
 </script>
 
 <template>
-  <div>
+  <div class="section">
     <div class="container">
       <div class="content-wrp">
         <h1>Weather app</h1>
@@ -57,6 +76,11 @@ export default {
       </div>
  
       <h2>{{ cityName }}</h2>
+      <div>
+        <span class="history" v-for="city in history" :key="city" @click="setFromHistory(city)">{{ city }}</span>
+      </div>
+      
+      
       <div class="list-wrap">
         <div class="list" v-for="item in responseResult.list" :key="item">
           <h3 class="date">
@@ -83,6 +107,9 @@ export default {
   display: flex;
   justify-content: space-between;
   column-gap: 10px
+}
+.history{
+  cursor: pointer;
 }
 h1{
   margin: 0 auto;
@@ -116,8 +143,10 @@ input:focus{
   background-color:#aaa1ff ;
 }
 .list-wrap {
+  margin-top: 20px;
   display: flex;
   overflow: auto;
+ 
 }
 .list {
   min-width: 150px;
@@ -127,4 +156,13 @@ input:focus{
   border-radius: 10px;
   margin-right: 20px;
 }
+.section{
+  padding: 0 20px;
+}
+.list-wrap::-webkit-scrollbar {
+  width: 0;
+}
+
+
+
 </style>
