@@ -9,12 +9,14 @@ export default {
     };
   },
   methods: {
-    created() {
+   
+    setHistory(){
       let storedValues= localStorage.getItem('History');
       if (storedValues){
         this.history = JSON.parse(storedValues);
       }
     },
+
     updateHistory(newValue){
       this.history.unshift(newValue);
       if(this.history.length>5){
@@ -50,11 +52,16 @@ export default {
       this.getData();
     },
     getData() {
+      
       this.setResponse();
       this.setResponseResult();
       this.getWeather(this.responseResult.list);
       this.updateHistory(this.cityName);
+      this.setHistory();
     },
+  },
+  mounted(){
+    this.setHistory();
   },
 };
 </script>
